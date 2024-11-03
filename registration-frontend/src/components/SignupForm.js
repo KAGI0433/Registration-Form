@@ -4,7 +4,8 @@ import Image from '../Images/Image.png';
 import Heading from '../Images/Heading.png';
 import Glogin from '../Images/Glogin.png';
 import Seperator from '../Images/Seperater.png';
-import Logo from '../Images/Logo.png'
+import Logo from '../Images/Logo.png';
+
 function SignupForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -40,7 +41,7 @@ function SignupForm() {
     return (
         <div className="signup-container">
             <form className="signup-form" onSubmit={handleSubmit}>
-            <img src={Logo} alt="Logo" className='logo' />
+                <img src={Logo} alt="Logo" className='logo' />
                 <img src={Heading} alt="Heading" className='heading' />
                 
                 <button 
@@ -83,6 +84,11 @@ function SignupForm() {
                     Remember Me
                 </label>
                 <button type="submit">Register</button>
+                
+               
+                <p className="login-link">
+                    Already have an account? <a href="/auth/google">Log in</a>
+                </p>
             </form>
 
             <div className="signup-image">
