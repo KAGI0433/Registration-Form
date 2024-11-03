@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './SignupForm.css'; 
-import Image from '../Images/Image.png'
-import Heading from '../Images/Heading.png'
-
+import Image from '../Images/Image.png';
+import Heading from '../Images/Heading.png';
+import Glogin from '../Images/Glogin.png';
+import Seperator from '../Images/Seperater.png';
+import Logo from '../Images/Logo.png'
 function SignupForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -38,7 +40,19 @@ function SignupForm() {
     return (
         <div className="signup-container">
             <form className="signup-form" onSubmit={handleSubmit}>
-            <img src={Heading} alt="Signup illustration" />
+            <img src={Logo} alt="Logo" className='logo' />
+                <img src={Heading} alt="Heading" className='heading' />
+                
+                <button 
+                    type="button" 
+                    className="google-button" 
+                    onClick={() => window.location.href = '/auth/google'}
+                >
+                    <img src={Glogin} alt="Glogin" className='glogin' />
+                </button>
+                
+                <img src={Seperator} alt="Seperator" className='seperator'/>
+
                 <input 
                     name="name" 
                     type="text" 
@@ -69,20 +83,15 @@ function SignupForm() {
                     Remember Me
                 </label>
                 <button type="submit">Register</button>
-                <button 
-                    type="button" 
-                    className="google-button" 
-                    onClick={() => window.location.href = '/auth/google'}
-                >
-                    Continue with Google
-                </button>
-                <p className={`feedback-message ${message.includes('failed') ? 'error' : 'success'}`}>
-                    {message}
-                </p>
             </form>
+
             <div className="signup-image">
                 <img src={Image} alt="Signup illustration" />
             </div>
+
+            <p className={`feedback-message ${message.includes('failed') ? 'error' : 'success'}`}>
+                {message}
+            </p>
         </div>
     );
 }
