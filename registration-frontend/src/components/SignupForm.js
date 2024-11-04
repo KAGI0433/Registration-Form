@@ -3,7 +3,7 @@ import './SignupForm.css';
 import Image from '../Images/Image.png';
 import Heading from '../Images/Heading.png';
 import Glogin from '../Images/Glogin.png';
-import Seperator from '../Images/Seperater.png';
+import Seperator from '../Images/Seperator.png';
 import Logo from '../Images/Logo.png';
 
 function SignupForm() {
@@ -26,13 +26,19 @@ function SignupForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/register', {
+            const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
             const result = await response.json();
-            setMessage(result.message);
+            
+            // Use the result variable here
+            if (response.ok) {
+                setMessage('Registration successful!'); // Use a success message
+            } else {
+                setMessage(result.error || 'Registration failed.'); // Show error from server
+            }
         } catch (error) {
             setMessage('Registration failed.');
         }
@@ -52,7 +58,7 @@ function SignupForm() {
                     <img src={Glogin} alt="Glogin" className='glogin' />
                 </button>
                 
-                <img src={Seperator} alt="Seperator" className='seperator'/>
+                <img src={Seperator} alt="Seperator" className='seperator' />
 
                 <input 
                     name="name" 
@@ -85,7 +91,6 @@ function SignupForm() {
                 </label>
                 <button type="submit">Register</button>
                 
-               
                 <p className="login-link">
                     Already have an account? <a href="/auth/google">Log in</a>
                 </p>
