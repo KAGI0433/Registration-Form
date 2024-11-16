@@ -1,83 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import './SignupForm.css'; 
 import Image from '../Images/Image.png';
 import Heading from '../Images/Heading.png';
 import Glogin from '../Images/Glogin.png';
 import Seperator from '../Images/Seperator.png';
 import Logo from '../Images/Logo.png';
+import axios from 'axios';
 
 function SignupForm() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        rememberMe: false
-    });
-    const [message, setMessage] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState(''); 
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-            const result = await response.json();
+            // Correct backend URL (change localhost to your backend's public URL if deployed)
+            const response = await axios.post('http://localhost:4000/SignupForm', { name, email, password });
             
-            // Use the result variable here
-            if (response.ok) {
-                setMessage('Registration successful!'); // Use a success message
+            if (response.status === 200) {
+                setMessage('Registration successful!');
             } else {
-                setMessage(result.error || 'Registration failed.'); // Show error from server
+                setMessage('Unexpected error occurred. Please try again.');
             }
         } catch (error) {
-            setMessage('Registration failed.');
+            console.error('Error during registration:', error);
+            setMessage('Registration failed. Please try again.');
         }
     };
 
     return (
         <div className="signup-container">
             <form className="signup-form" onSubmit={handleSubmit}>
-                <img src={Logo} alt="Logo" className='logo' />
-                <img src={Heading} alt="Heading" className='heading' />
+                <img src={Logo} alt="Logo" className="logo" />
+                <img src={Heading} alt="Heading" className="heading" />
                 
                 <button 
                     type="button" 
                     className="google-button" 
                     onClick={() => window.location.href = '/auth/google'}
                 >
-                    <img src={Glogin} alt="Glogin" className='glogin' />
+                    <img src={Glogin} alt="Sign up with Google" className="glogin" />
                 </button>
                 
-                <img src={Seperator} alt="Seperator" className='seperator' />
+                <img src={Seperator} alt="Separator" className="separator" />
 
                 <input 
                     name="name" 
                     type="text" 
-                    onChange={handleChange} 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)} 
                     placeholder="Name" 
                     required 
                 />
                 <input 
                     name="email" 
                     type="email" 
-                    onChange={handleChange} 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} 
                     placeholder="Email" 
                     required 
                 />
                 <input 
                     name="password" 
                     type="password" 
-                    onChange={handleChange} 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} 
                     placeholder="Password" 
                     required 
                 />
@@ -85,14 +74,13 @@ function SignupForm() {
                     <input 
                         name="rememberMe" 
                         type="checkbox" 
-                        onChange={handleChange} 
                     />
                     Remember Me
                 </label>
                 <button type="submit">Register</button>
                 
                 <p className="login-link">
-                    Already have an account? <a href="/auth/google">Log in</a>
+                    Already have an account? <a href="/login">Log in</a>
                 </p>
             </form>
 
@@ -100,9 +88,12 @@ function SignupForm() {
                 <img src={Image} alt="Signup illustration" />
             </div>
 
-            <p className={`feedback-message ${message.includes('failed') ? 'error' : 'success'}`}>
-                {message}
-            </p>
+            {/* Show feedback message */}
+            {message && (
+                <p className={`feedback-message ${message.includes('failed') ? 'error' : 'success'}`}>
+                    {message}
+                </p>
+            )}
         </div>
     );
 }
