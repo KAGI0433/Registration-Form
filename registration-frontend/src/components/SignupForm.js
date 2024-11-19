@@ -1,5 +1,5 @@
-import React, { useState } from 'react'; 
-import './SignupForm.css'; 
+import React, { useState } from 'react';
+import './SignupForm.css';
 import Image from '../Images/Image.png';
 import Heading from '../Images/Heading.png';
 import Glogin from '../Images/Glogin.png';
@@ -8,7 +8,7 @@ import Logo from '../Images/Logo.png';
 import axios from 'axios';
 
 function SignupForm() {
-    const [name, setName] = useState('');
+    const [username, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(''); 
@@ -16,8 +16,7 @@ function SignupForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            // Correct backend URL (change localhost to your backend's public URL if deployed)
-            const response = await axios.post('http://localhost:4000/SignupForm', { name, email, password });
+            const response = await axios.post('http://localhost:8081/signup', { username, email, password });
             
             if (response.status === 200) {
                 setMessage('Registration successful!');
@@ -49,7 +48,7 @@ function SignupForm() {
                 <input 
                     name="name" 
                     type="text" 
-                    value={name}
+                    value={username}
                     onChange={(e) => setName(e.target.value)} 
                     placeholder="Name" 
                     required 
@@ -99,3 +98,4 @@ function SignupForm() {
 }
 
 export default SignupForm;
+
